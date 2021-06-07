@@ -1,0 +1,34 @@
+div#calc-container {
+    max-width: 350px;
+    padding: 15px;
+    background-color: #f8f8f8;
+}
+.calc-row {
+    clear: both;
+}
+.calc-row > div a {
+    float: left;
+    width: 19%;
+    padding: 15px 2%;
+    text-align: center;
+    border: 1px solid #c8c9c8;
+    margin: 2px;
+    background-color: #efefef;
+}
+div#calc-input-field {
+    padding: 10px;
+    text-align: right;
+    font-size: 40px;
+}
+div#clear a {
+    width: 68.5%;
+}
+div#calc-keys {
+    overflow: hidden;
+}
+#calc-keys a {
+    text-decoration: none;
+}
+div#equals a {
+    width: 43.6%;
+}
