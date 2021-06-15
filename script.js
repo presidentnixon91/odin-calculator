@@ -1,81 +1,111 @@
 // MATHEMATICAL FUNCTIONS
 // Add
 function add(c,d) {
-    return c + d;
+    currentValue = c + d;
+    oldValue = currentValue;
+    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Subtract
 function subtract(c,d) {
-    return c - d;
+    currentValue = c - d;
+    oldValue = currentValue;
+    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Multiply
-function multiple(c,d) {
-    return c * d;
+function multiply(c,d) {
+    currentValue = c * d;
+    oldValue = currentValue;
+    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Divide
 function divide(c,d) {
-    console.log(c / d);
+    currentValue = c / d;
+    oldValue = currentValue;
+    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
-// Operate using value taken from ID of operator button
-function operate(operator,a,b) {
-    console.log(operator);
-    operator(a,b);
-}
+
 // Values for storing numbers
 let calcUsed = false;
 let oldValue;
 let currentValue;
 let operatorChoice;
+let operatorUsed = false;
 
 let currentDisplay = document.querySelector('#calc-input-field');
 
-// Populate input field on button press
-function addNumber(a) {
-    if(calcUsed) {
-        currentValue = currentDisplay.innerHTML + a;
-        currentDisplay.innerHTML = currentValue;
-    } else {
-        currentDisplay.innerHTML = a;
-        currentValue = a;
-        calcUsed = true;
-    }
-}
 // Events for clicking number button
 let calcNumberButtons = document.querySelectorAll('.calc-number a');
 calcNumberButtons.forEach((btn) =>  {
     // Event listener for each button
     btn.addEventListener('click', (e) => {
         let temp = e.target.innerHTML;
+        // Use whatever number was clicked on to add to display
         addNumber(temp);
     });
 });
+
+// Populate input field on button press
+function addNumber(a) {
+    // If a number is already there, add to it
+    if(calcUsed) {
+        currentValue = currentDisplay.innerHTML + a;
+        currentDisplay.innerHTML = currentValue;
+    // Otherwise replace it
+    } else {
+        currentDisplay.innerHTML = a;
+        currentValue = a;
+        calcUsed = true;
+    }
+}
+
 // Operators events
 let operatorButtons = document.querySelectorAll('.calc-operator');
 operatorButtons.forEach((operatorBtn) => {
+    // Event listeners for each operator
     operatorBtn.addEventListener('click', () => {
-        operatorChoice = operatorBtn.getAttribute('id');
-        if(calcUsed) {
-            // Store the number on display as old value
-            oldValue = currentValue;
-            // Wipe the current value
-            currentValue = 0;
-            currentDisplay.innerHTML = currentValue;
+        // Take the ID to use as what function to run
+        if(operatorUsed) {
+            operate(operatorChoice, oldValue, currentValue);
             calcUsed = false;
+            operatorChoice = operatorBtn.getAttribute('id');
+        } else if(calcUsed) {
+            operatorChoice = operatorBtn.getAttribute('id');
+            // Store the number as old value
+            oldValue = currentValue;
+            // Reset calc to use new number
+            calcUsed = false;
+            operatorUsed = true;
         } else {
+            operatorChoice = operatorBtn.getAttribute('id');
             oldValue = 0;
         }
-        console.log(calcUsed);
-        console.log(operatorChoice);
-        console.log(oldValue);
-        console.log(currentValue);
     })
 });
+
+// Operate using value taken from ID of operator button
+function operate(operator,a,b) {
+    let operatorName = operator;
+    // Make sure the numbers are stored as integers
+    a = Number(oldValue);
+    b = Number(currentValue);
+    // Run the function using the string value of operator
+    window[operatorName](a,b);
+}
+
 // Calculate the two numbers using operator
 let equalsButton = document.querySelector('#equals a');
 equalsButton.addEventListener('click', function() {
-    console.log(operatorChoice);
-    console.log(oldValue);
-    console.log(currentValue);
-    let x = Number(oldValue);
-    let y = Number(currentValue);
-    operate(operatorChoice,x,y);
+    // Run the operator using the button clicked
+    operate(operatorChoice,oldValue,currentValue);
+});
+
+// Clear calculator
+// Listen for clear button clicked
+let clearButton = document.querySelector('#clear a');
+clearButton.addEventListener('click', function() {
+    oldValue = 0;
+    currentValue = 0;
+    currentDisplay.innerHTML = currentValue;
+    calcUsed = false;
+    operatorUsed = false;
 });
