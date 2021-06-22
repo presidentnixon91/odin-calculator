@@ -2,26 +2,49 @@
 // Add
 function add(c,d) {
     currentValue = c + d;
+    if(currentValue % 1 == 0) {
+        currentDisplay.innerHTML = currentValue;
+    } else {
+        currentValue = currentValue.toFixed(4);
+        currentDisplay.innerHTML = currentValue;
+    }
     oldValue = currentValue;
-    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Subtract
 function subtract(c,d) {
     currentValue = c - d;
+    if(currentValue % 1 == 0) {
+        currentDisplay.innerHTML = currentValue;
+    } else {
+        currentValue = currentValue.toFixed(4);
+        currentDisplay.innerHTML = currentValue;
+    }
     oldValue = currentValue;
-    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Multiply
 function multiply(c,d) {
     currentValue = c * d;
+    if(currentValue % 1 == 0) {
+        currentDisplay.innerHTML = currentValue;
+    } else {
+        currentValue = currentValue.toFixed(4);
+        currentDisplay.innerHTML = currentValue;
+    }
     oldValue = currentValue;
-    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 // Divide
 function divide(c,d) {
     currentValue = c / d;
+    // Check if user is trying to divide by zero
+    if(c == 0 || d == 0) {
+        currentDisplay.innerHTML = "Do better";
+    } else if(currentValue % 1 == 0) {
+        currentDisplay.innerHTML = currentValue;
+    } else {
+        currentValue = currentValue.toFixed(4);
+        currentDisplay.innerHTML = currentValue;
+    }
     oldValue = currentValue;
-    currentDisplay.innerHTML = currentValue.toFixed(6);
 }
 
 // Values for storing numbers
@@ -30,6 +53,7 @@ let oldValue;
 let currentValue;
 let operatorChoice;
 let operatorUsed = false;
+let decimalUsed = false;
 
 let currentDisplay = document.querySelector('#calc-input-field');
 
@@ -40,6 +64,14 @@ calcNumberButtons.forEach((btn) =>  {
     btn.addEventListener('click', (e) => {
         let temp = e.target.innerHTML;
         // Use whatever number was clicked on to add to display
+        // Check if decimal has already been used
+        if(temp == '.') {
+            if(decimalUsed) {
+                return;
+            } else {
+                decimalUsed = true;
+            }
+        }
         addNumber(temp);
     });
 });
@@ -77,8 +109,9 @@ operatorButtons.forEach((operatorBtn) => {
             operatorUsed = true;
         } else {
             operatorChoice = operatorBtn.getAttribute('id');
-            oldValue = 0;
         }
+        // Allow decimal to be used again
+        decimalUsed = false;
     })
 });
 
@@ -90,13 +123,20 @@ function operate(operator,a,b) {
     b = Number(currentValue);
     // Run the function using the string value of operator
     window[operatorName](a,b);
+    calcUsed = false;
 }
 
-// Calculate the two numbers using operator
+// Equals - Calculate the two numbers using operator
 let equalsButton = document.querySelector('#equals a');
 equalsButton.addEventListener('click', function() {
-    // Run the operator using the button clicked
-    operate(operatorChoice,oldValue,currentValue);
+    // Check if the calculator has been used
+    if(calcUsed) {
+        // Run the operator using the button clicked
+        operate(operatorChoice,oldValue,currentValue);
+        operatorUsed = false;
+    }
+    // Allow decimal to be used again
+    decimalUsed = false;
 });
 
 // Clear calculator
@@ -108,4 +148,5 @@ clearButton.addEventListener('click', function() {
     currentDisplay.innerHTML = currentValue;
     calcUsed = false;
     operatorUsed = false;
+    decimalUsed = false;
 });

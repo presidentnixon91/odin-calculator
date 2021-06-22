@@ -1,7 +1,24 @@
+body {
+    margin: 0;
+    background-color: #f5f5f5;
+    font-family: system-ui;
+}
+.container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 50px 100px;
+    background-color: white;
+}
+h1 {
+    margin-top: 0;
+}
 div#calc-container {
+    margin: 60px 0;
     max-width: 350px;
     padding: 15px;
     background-color: #f8f8f8;
+    border-radius: 15px;
+    border: 5px solid #848484;
 }
 .calc-row {
     clear: both;
@@ -13,12 +30,25 @@ div#calc-container {
     text-align: center;
     border: 1px solid #c8c9c8;
     margin: 2px;
-    background-color: #efefef;
+    color: black !important;
+}
+.calc-operator a {
+    background-color: #f9a8a8;
+}
+div#clear a {
+    background-color: #d0b6f3;
+}
+.calc-number a {
+    background-color: #77adff;
 }
 div#calc-input-field {
-    padding: 10px;
+    padding: 4px 10px;
     text-align: right;
     font-size: 40px;
+    background-color: #edf4ff;
+    border-radius: 8px;
+    border: 2px solid #4d4dd0;
+    margin: 0 5px 10px 2px;
 }
 div#clear a {
     width: 68.5%;
@@ -31,4 +61,5 @@ div#calc-keys {
 }
 div#equals a {
     width: 43.6%;
+    background-color: #84e494;
 }
